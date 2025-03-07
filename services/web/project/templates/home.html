@@ -1,0 +1,24 @@
+<html>
+<head>
+    <title>{{app_title}}</title>
+    <link rel="icon" type="image/x-icon" href="{{url_for('static', filename='favicon.ico')}}">
+    <script type="text/javascript" src="{{url_for('static', filename='jquery-1.6.2.min.js')}}"></script>
+    {% include 'custom.headers' ignore missing %}
+</head>
+<body style="padding-top: 20px; padding-left: 20px;">
+    <div id="content">
+        <h1><a href="/" style="text-decoration: none; color: #000000;">{{app_title}}</a></h1>
+        <form method="POST" action="/">
+            <input id="address" name="address" placeholder="Address" style="padding: 5px; margin-top: 5px; margin-bottom: 5px;" value="{{address}}" autofocus><BR>
+            <input id="type" name="record_type" placeholder="Record Type" style="padding: 5px; margin-top: 5px; margin-bottom: 5px;" value="{{record_type}}"><BR>
+            <input id="server" name="server" placeholder="Server to Query (optional)" style="padding: 5px; margin-top: 5px; margin-bottom: 5px;" value="{{server}}"><BR>
+            <!BR>
+            <input type="submit" name="submit" value="Lookup &gt;&gt;&gt;" onclick="$('#loading').show();">
+            <div id="loading" style="display:none;"><img height="100px" width="100px" src="{{url_for('static', filename='spinner.gif')}}"></div>
+        </form>
+        <BR>
+        {{page_body|safe}}
+        <BR>
+    </div>
+</body>
+</html>
