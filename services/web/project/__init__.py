@@ -24,7 +24,7 @@ def lookup_get(address, record_type, server_to_query):
 
 @app.route("/", methods=["POST"])
 def lookup_post():
-    sleep(3.25)
+    sleep(0.25)
 
     if str(request.form["address"]) == "":
         full_url = DEFAULT_ADDRESS
