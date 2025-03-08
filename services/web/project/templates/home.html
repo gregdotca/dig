@@ -22,7 +22,14 @@
         </div>
         <div id="loading" style="display: none;"><button class="btn btn-accent loading mt-7"></button></div>
     </form>
-    {{ page_body|safe }}
+    {% if page_body is iterable and page_body is not string %}
+        {% for item in page_body %}
+            {{ item|safe }}
+            {% if not loop.last %}<br>{% endif %}
+        {% endfor %}
+    {% else %}
+        {{ page_body|safe }}
+    {% endif %}
 </div>
 </body>
 </html>
