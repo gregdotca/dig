@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
+import pydig
 from flask import Flask, redirect, render_template, request
 from time import sleep
-import pydig
 
 app = Flask(__name__, static_folder="assets")
 
