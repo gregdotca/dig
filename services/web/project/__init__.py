@@ -10,9 +10,27 @@ DEFAULT_ADDRESS = "example.com"
 DEFAULT_RECORD_TYPE = "A"
 
 
-@app.route("/", methods=["GET"])
+@app.route("/", methods=["GET", "POST"])
 def home():
-    return redirect("/" + DEFAULT_ADDRESS + "/" + DEFAULT_RECORD_TYPE, code=302)
+    if request.method == "GET":
+        return redirect("/" + DEFAULT_ADDRESS + "/" + DEFAULT_RECORD_TYPE)
+    else:
+        sleep(0.25)
+
+        if str(request.form["address"]) == "":
+            full_url = DEFAULT_ADDRESS
+        else:
+            full_url = str(request.form["address"])
+
+        if str(request.form["record_type"]) == "":
+            full_url += "/" + DEFAULT_RECORD_TYPE
+        else:
+            full_url += "/" + str(request.form["record_type"])
+
+        if str(request.form["server"]) != "":
+            full_url += "/" + str(request.form["server"])
+
+        return redirect(full_url)
 
 
 @app.route("/<address>", defaults={'record_type': '', 'server_to_query': ''}, methods=["GET"])
@@ -20,26 +38,6 @@ def home():
 @app.route("/<address>/<record_type>/<server_to_query>", methods=["GET"])
 def lookup_get(address, record_type, server_to_query):
     return display_homepage(address, record_type, server_to_query, run_dig(address, record_type, server_to_query))
-
-
-@app.route("/", methods=["POST"])
-def lookup_post():
-    sleep(0.25)
-
-    if str(request.form["address"]) == "":
-        full_url = DEFAULT_ADDRESS
-    else:
-        full_url = str(request.form["address"])
-
-    if str(request.form["record_type"]) == "":
-        full_url += "/" + DEFAULT_RECORD_TYPE
-    else:
-        full_url += "/" + str(request.form["record_type"])
-
-    if str(request.form["server"]) != "":
-        full_url += "/" + str(request.form["server"])
-
-    return redirect(full_url, code=302)
 
 
 def display_homepage(address, record_type, server_to_query, page_body):
