@@ -1,5 +1,6 @@
-<html data-theme="bumblebee">
+<html>
 <head>
+    <meta name="color-scheme" content="light dark">
     <title>{{ app_title }}</title>
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.png') }}">
     <script type="text/javascript" src="{{ url_for('static', filename='jquery-3.7.1.min.js') }}"></script>
@@ -15,7 +16,7 @@
                 <input id="address" class="input" name="address" placeholder="Address" value="{{ address }}" autofocus><BR>
                 <input id="type" class="input" name="record_type" placeholder="Record Type" value="{{ record_type }}"><BR>
                 <input id="server" class="input" name="server" placeholder="Server to Query (optional)" value="{{ server }}"><BR>
-                <input class="btn btn-accent" type="submit" name="submit" value="Lookup" onclick="$('#loading').show();">
+                <input class="btn btn-accent dark:btn-primary" type="submit" name="submit" value="Lookup" onclick="$('#loading').show();">
             </fieldset>
         </div>
         <div id="loading" class="pt-8" style="display: none;"><span class="loading loading-circle loading-xl"></span></div>

@@ -1,6 +1,8 @@
 dig
 ---
 
+[![ACR B1b](https://img.shields.io/badge/ACR-B1b-2140B5)](ACR.md)
+
 ## Demo
 
 https://dig.greg.ca
@@ -9,7 +11,7 @@ https://dig.greg.ca
 
 - Clone the repository
 - Run "docker-compose up -d"
-- Load https://IP_ADDRESS:8091 in your web browser
+- Load http://IP_ADDRESS:8091 in your web browser
 
 ## License
 
