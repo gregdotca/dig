@@ -2,6 +2,9 @@
 
 ## 2026-10-11
 
+- Fix the Dockerfile lint warnings and remove the unused `FLASK_ENV` setting. Docker's build checks flagged `FROM ... as builder` (lowercase `as` with uppercase `FROM`) and the legacy `ENV KEY value` format; they're now `AS builder` and `ENV KEY=value`, and `docker build --check` reports no warnings. Flask stopped reading `FLASK_ENV` in 2.3, so setting it in `docker-compose.yml` had no effect.
+  - `services/web/Dockerfile:6,12-13`: `AS builder`, and `ENV KEY=value`.
+  - `docker-compose.yml`: remove `FLASK_ENV=production`.
 - Update Python from 3.9 to 3.14, Flask from 2.3.0 to 3.1.3, gunicorn from 20.1.0 to 26.2.0, and flake8 from 7.1.2 to 7.4.1, and pin Werkzeug to 3.1.9. Python 3.9 reached end of life in October 2025, so it no longer gets security fixes. gunicorn 20.1.0 has a request-smuggling vulnerability (CVE-2024-1135, fixed in 22.0.0). Werkzeug wasn't pinned, so pip installed Werkzeug 3, which Flask 2.3.0 doesn't fully support: the site still ran, but Flask's test client crashed with `module 'werkzeug' has no attribute '__version__'`. gunicorn 26 also adds a control socket for its `gunicornc` tool, which dig doesn't use; gunicorn tried to create it in `/home/app/.gunicorn`, which the `app` user can't write to, and logged a `Permission denied` error on every start, so it's now turned off with `--no-control-socket`.
   - `services/web/requirements.txt`: new Flask and gunicorn versions, and pin Werkzeug.
   - `services/web/Dockerfile:6,35,52`: `python:3.14.7-slim` for both stages, and flake8 7.4.1.
