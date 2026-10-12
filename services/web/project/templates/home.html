@@ -1,6 +1,8 @@
-<html>
+<!doctype html>
+<html lang="en">
 <head>
     <meta name="color-scheme" content="light dark">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ app_title }}</title>
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.png') }}">
     <script type="text/javascript" src="{{ url_for('static', filename='jquery-3.7.1.min.js') }}"></script>
@@ -10,8 +12,8 @@
 <body class="p-8">
 <div id="content">
     <h1 class="text-2xl mb-3"><a href="/">{{ app_title }}</a></h1>
-    <form method="POST" action="/" class="form pb-7">
-        <div class="flex justify-left">
+    <form method="POST" action="/" class="pb-7">
+        <div class="flex">
             <fieldset class="fieldset bg-base-200 border border-base-300 p-10 -ml-1 rounded-box">
                 <input id="address" class="input" name="address" aria-label="Address" placeholder="Address" value="{{ address }}" autofocus><BR>
                 <input id="type" class="input" name="record_type" aria-label="Record Type" placeholder="Record Type" value="{{ record_type }}"><BR>
@@ -19,7 +21,7 @@
                 <input class="btn btn-accent dark:btn-primary" type="submit" name="submit" value="Lookup" onclick="$('#loading').show();">
             </fieldset>
         </div>
-        <div id="loading" class="pt-8" style="display: none;"><span class="loading loading-circle loading-xl"></span></div>
+        <div id="loading" class="pt-8" style="display: none;"><span class="loading loading-xl"></span></div>
     </form>
     {% if page_body is iterable and page_body is not string %}
         {% for item in page_body %}
