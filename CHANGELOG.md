@@ -2,6 +2,8 @@
 
 ## 2026-10-12
 
+- Upgrade Python from 3.14.7 to 3.14.8 (`python:3.14.8-slim`). 3.14.8 is an expedited security release (fixes for SSL and tarfile bugs, among others). Tested in the production image: flake8 and all 30 tests pass during the build, `example.com/A` returns the same addresses as running `dig` in the container, and a private server and an unknown record type get their error messages. The locally excluded `Dockerfile.DEV` isn't in the repo; it was moved to 3.14.8 by hand to match.
+  - `services/web/Dockerfile:6,56`: both stages use the new image.
 - Add Dependabot version updates. Dependabot alerts and security fix PRs (set in the GitHub repo's settings, not in this file) only cover known vulnerabilities; nothing kept the pinned packages or the Python base image current otherwise. Dependabot now checks the requirements files and the `Dockerfile`'s Python base image once a month, with all pip updates grouped into one PR. It only proposes versions that have been out for at least 7 days, so a bad or hijacked release has time to be caught and pulled first; security fix PRs aren't delayed. The versions pinned inside the `Dockerfile`'s build steps (flake8 and the Tailwind CLI) aren't covered and still need updating by hand; `dnsutils` is installed from Debian without a version pin, so Dependabot doesn't track it either. GitHub Actions isn't included because the repo has no workflows.
   - `.github/dependabot.yml` (new): pip updates for `services/web/requirements.txt` and `requirements-test.txt` (pytest), and Docker updates for `services/web/Dockerfile`.
 
