@@ -1,7 +1,7 @@
 dig
 ---
 
-[![ACR B2b](https://img.shields.io/badge/ACR-B2b-2140B5)](ACR.md)
+[![ACR B3b](https://img.shields.io/badge/ACR-B3b-2140B5)](ACR.md)
 
 ## Demo
 

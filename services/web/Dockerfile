@@ -36,6 +36,10 @@ RUN pip install flake8==7.4.1
 COPY . .
 RUN flake8 --ignore=E501,W503,F401 .
 
+# test
+RUN pip install -r requirements-test.txt
+RUN python -m pytest -q -p no:cacheprovider
+
 # build css
 RUN tailwindcss -i project/styles/app.css -o project/assets/app.css --minify
 
