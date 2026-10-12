@@ -23,11 +23,11 @@
     </form>
     {% if page_body is iterable and page_body is not string %}
         {% for item in page_body %}
-            {{ item|safe }}
+            {{ item }}
             {% if not loop.last %}<br>{% endif %}
         {% endfor %}
     {% else %}
-        {{ page_body|safe }}
+        {{ page_body }}
     {% endif %}
 </div>
 </body>

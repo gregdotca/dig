@@ -2,6 +2,7 @@
 
 ## 2026-10-11
 
+- Fix cross-site scripting through DNS results. The template printed `dig`'s output with `|safe`, so HTML in a DNS answer ran on the page: anyone could put a `<script>` in a TXT record on their own domain and share a `/theirdomain/TXT` link. The output is now autoescaped like every other value, which shows the text as it is. Files changed: `services/web/project/templates/home.html:28,32`, and `CLAUDE.md`.
 - Add `aria-label`s to the Address, Record Type, and Server to Query inputs. They had only placeholders, so screen readers could announce them without saying what each field is for, and the hint disappeared once a value was typed or filled in from the URL. The labels match the placeholder text, so the page looks the same. File changed: `services/web/project/templates/home.html:16-18`.
 - Add an `ACR.md` file with the project's [AI Code Rating](https://aicoderating.com/spec/0.1/), B1b (Maintainer: Experienced · AI Share: 1–25% · Oversight: Reviewed), so readers can see how much of the code AI wrote and how carefully it was checked, and add its badge to `README.md`.
 - Fix the README's installation step to load `http://IP_ADDRESS:8091` instead of `https://`. The container serves plain HTTP (gunicorn on port 5000, published on 8091, with no TLS), so the `https://` link failed with a TLS error.
