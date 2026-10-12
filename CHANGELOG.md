@@ -2,6 +2,7 @@
 
 ## 2026-10-11
 
+- Update `ACR.md` to B2b (Maintainer: Experienced · AI Share: 26–50% · Oversight: Reviewed), and its badge in `README.md`. The security fixes and the dependency upgrade raised the share of code lines written by AI to about 37%, past the 1–25% band of the B1b rating, and the "How AI Was Used" section didn't mention them.
 - Fix the Dockerfile lint warnings and remove the unused `FLASK_ENV` setting. Docker's build checks flagged `FROM ... as builder` (lowercase `as` with uppercase `FROM`) and the legacy `ENV KEY value` format; they're now `AS builder` and `ENV KEY=value`, and `docker build --check` reports no warnings. Flask stopped reading `FLASK_ENV` in 2.3, so setting it in `docker-compose.yml` had no effect.
   - `services/web/Dockerfile:6,12-13`: `AS builder`, and `ENV KEY=value`.
   - `docker-compose.yml`: remove `FLASK_ENV=production`.
