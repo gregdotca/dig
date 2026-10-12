@@ -55,6 +55,11 @@ def run_dig(address, record_type, server_to_query):
     address = address or DEFAULT_ADDRESS
     record_type = record_type or DEFAULT_RECORD_TYPE
 
+    # pydig passes the address to dig as its own argument, so dig would read
+    # one starting with "-" or "+" as an option (e.g. "-f<file>")
+    if address.startswith(("-", "+")):
+        return "Error: Invalid address"
+
     try:
         if server_to_query != "":
             resolver = pydig.Resolver(nameservers=[server_to_query])
