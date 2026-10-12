@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-12
+
+- Add Dependabot version updates. Dependabot alerts and security fix PRs (set in the GitHub repo's settings, not in this file) only cover known vulnerabilities; nothing kept the pinned packages or the Python base image current otherwise. Dependabot now checks the requirements files and the `Dockerfile`'s Python base image once a month, with all pip updates grouped into one PR. It only proposes versions that have been out for at least 7 days, so a bad or hijacked release has time to be caught and pulled first; security fix PRs aren't delayed. The versions pinned inside the `Dockerfile`'s build steps (flake8 and the Tailwind CLI) aren't covered and still need updating by hand; `dnsutils` is installed from Debian without a version pin, so Dependabot doesn't track it either. GitHub Actions isn't included because the repo has no workflows.
+  - `.github/dependabot.yml` (new): pip updates for `services/web/requirements.txt` and `requirements-test.txt` (pytest), and Docker updates for `services/web/Dockerfile`.
+
 ## 2026-10-11
 
 - Clarify the server check and header notes in `CLAUDE.md`. The `resolve_public_server` sentence put "and rejects it unless every address it resolves to is public" after a long aside about timeouts, so it was hard to tell what the function does; the check now comes first. The security headers note didn't say that the live site's Caddy proxy replaces `Referrer-Policy` and `X-Frame-Options`, or that rate limiting was deliberately left out, so both are now recorded.
