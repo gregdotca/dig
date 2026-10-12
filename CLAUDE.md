@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Running
 
-Production (the committed config): gunicorn on container port 5000, published on host port 8091.
+Production (the committed config): gunicorn on container port 5000, published on host port 8091. The gunicorn command has `--no-control-socket` because dig doesn't use gunicorn's `gunicornc` control tool, and the `app` user can't create its default socket in `/home/app/.gunicorn`.
 
 ```sh
 docker-compose up -d --build
