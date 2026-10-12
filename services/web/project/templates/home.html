@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ app_title }}</title>
     <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.png') }}">
-    <script type="text/javascript" src="{{ url_for('static', filename='jquery-3.7.1.min.js') }}"></script>
     {% include 'custom.headers' ignore missing %}
     <link href="{{ url_for('static', filename='app.css') }}" rel="stylesheet" type="text/css" />
 </head>
@@ -18,7 +17,7 @@
                 <input id="address" class="input" name="address" aria-label="Address" placeholder="Address" value="{{ address }}" autofocus><BR>
                 <input id="type" class="input" name="record_type" aria-label="Record Type" placeholder="Record Type" value="{{ record_type }}"><BR>
                 <input id="server" class="input" name="server" aria-label="Server to Query (optional)" placeholder="Server to Query (optional)" value="{{ server }}"><BR>
-                <input class="btn btn-accent dark:btn-primary" type="submit" name="submit" value="Lookup" onclick="$('#loading').show();">
+                <input class="btn btn-accent dark:btn-primary" type="submit" name="submit" value="Lookup" onclick="document.getElementById('loading').style.display = '';">
             </fieldset>
         </div>
         <div id="loading" class="pt-8" style="display: none;"><span class="loading loading-xl"></span></div>

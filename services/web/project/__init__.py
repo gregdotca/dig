@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import pydig
 from flask import Flask, redirect, render_template, request, url_for
-from time import sleep
 
 app = Flask(__name__, static_folder="assets")
 
@@ -9,21 +8,25 @@ APP_TITLE = "dig"
 DEFAULT_ADDRESS = "example.com"
 DEFAULT_RECORD_TYPE = "A"
 
+# Wait 2 seconds for each server's answer and don't retry, so a server that
+# doesn't respond can't tie up a gunicorn worker for long. Without a server
+# to query, dig tries each resolver in resolv.conf, 2 seconds apiece
+DIG_TIMEOUT_ARGS = ["+time=2", "+tries=1"]
+
 
 @app.route("/", methods=["GET", "POST"])
 def home():
     if request.method == "GET":
         return redirect("/" + DEFAULT_ADDRESS + "/" + DEFAULT_RECORD_TYPE)
     else:
-        sleep(0.25)
-
         url_args = {
-            "address": str(request.form["address"]) or DEFAULT_ADDRESS,
-            "record_type": str(request.form["record_type"]) or DEFAULT_RECORD_TYPE,
+            "address": request.form.get("address", "") or DEFAULT_ADDRESS,
+            "record_type": request.form.get("record_type", "") or DEFAULT_RECORD_TYPE,
         }
 
-        if str(request.form["server"]) != "":
-            url_args["server_to_query"] = str(request.form["server"])
+        server = request.form.get("server", "")
+        if server != "":
+            url_args["server_to_query"] = server
 
         # url_for() encodes each value, so the redirect always stays on this site
         return redirect(url_for("lookup_get", **url_args))
@@ -57,11 +60,11 @@ def run_dig(address, record_type, server_to_query):
         return "Error: Invalid address"
 
     try:
-        if server_to_query != "":
-            resolver = pydig.Resolver(nameservers=[server_to_query])
-            dig_result = resolver.query(address, record_type)
-        else:
-            dig_result = pydig.query(address, record_type)
+        resolver = pydig.Resolver(
+            nameservers=[server_to_query] if server_to_query != "" else None,
+            additional_args=DIG_TIMEOUT_ARGS,
+        )
+        dig_result = resolver.query(address, record_type)
 
     except Exception:
 

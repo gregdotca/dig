@@ -2,6 +2,12 @@
 
 ## 2026-10-11
 
+- Fix slow or unresponsive DNS servers blocking the site, and remove jQuery and the artificial delay on lookups. gunicorn ran a single sync worker, and `dig` waits about 15 seconds by default for a server that doesn't answer, so one lookup against a dead server (such as `/example.com/A/192.0.2.1`) made every other visitor wait. gunicorn now runs 4 workers, and `dig` gets `+time=2 +tries=1`, so that lookup fails after 2 seconds while other lookups carry on (tested: about 0.015 seconds alongside it). `POST /` also slept for 0.25 seconds before redirecting, for no reason, which held a worker and slowed every lookup. jQuery (about 87 KB) was loaded only to show the loading spinner, which one line of plain JavaScript now does. A POST with missing form fields returned a 400 error; missing fields now get the defaults, as empty ones already did.
+  - `services/web/project/__init__.py:3,11-14,22-29,63-67`: remove `sleep`, add `DIG_TIMEOUT_ARGS`, read the form with `.get()`, and always use a `pydig.Resolver` with the timeout options.
+  - `services/web/project/templates/home.html:8,20`: remove the jQuery `<script>` tag, and show the spinner with `document.getElementById`.
+  - `services/web/project/assets/jquery-3.7.1.min.js`: removed.
+  - `docker-compose.yml:8`: add `--workers 4` to the gunicorn command.
+  - `CLAUDE.md`: note the workers, the timeout options, and that the page has no JavaScript library.
 - Update `ACR.md` to B2b (Maintainer: Experienced · AI Share: 26–50% · Oversight: Reviewed), and its badge in `README.md`. The security fixes and the dependency upgrade raised the share of code lines written by AI to about 37%, past the 1–25% band of the B1b rating, and the "How AI Was Used" section didn't mention them.
 - Fix the Dockerfile lint warnings and remove the unused `FLASK_ENV` setting. Docker's build checks flagged `FROM ... as builder` (lowercase `as` with uppercase `FROM`) and the legacy `ENV KEY value` format; they're now `AS builder` and `ENV KEY=value`, and `docker build --check` reports no warnings. Flask stopped reading `FLASK_ENV` in 2.3, so setting it in `docker-compose.yml` had no effect.
   - `services/web/Dockerfile:6,12-13`: `AS builder`, and `ENV KEY=value`.
