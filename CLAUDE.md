@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Running
 
-Production (the committed config): gunicorn with 4 sync workers on container port 5000, published on host port 8091. Each lookup holds a worker while `dig` runs, so one worker would make every visitor wait behind a slow lookup. The gunicorn command has `--no-control-socket` because dig doesn't use gunicorn's `gunicornc` control tool, and the `app` user can't create its default socket in `/home/app/.gunicorn`.
+Production (the committed config): gunicorn with 4 sync workers on container port 5000, published on host port 8091 at `${BIND_ADDRESS:-127.0.0.1}`, so it's only reachable locally unless `BIND_ADDRESS` is set (in the shell or a gitignored `.env` next to `docker-compose.yml`; on the server iac writes that `.env`). Never put a server's real IP in the repo. Each lookup holds a worker while `dig` runs, so one worker would make every visitor wait behind a slow lookup. The gunicorn command has `--no-control-socket` because dig doesn't use gunicorn's `gunicornc` control tool, and the `app` user can't create its default socket in `/home/app/.gunicorn`.
 
 ```sh
 docker-compose up -d --build

@@ -11,7 +11,9 @@ https://dig.greg.ca
 
 - Clone the repository
 - Run "docker-compose up -d"
-- Load http://IP_ADDRESS:8091 in your web browser
+- Load http://127.0.0.1:8091 in your web browser
+
+The port listens on 127.0.0.1 only by default, so dig isn't reachable from other machines unless you put a reverse proxy in front of it. To listen on another address, set `BIND_ADDRESS` in your shell or in a `.env` file next to `docker-compose.yml` (for example `BIND_ADDRESS=0.0.0.0` for every address).
 
 ## License
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-21
+
+- Publish the port on 127.0.0.1 by default instead of every address. `docker-compose.yml` published `8091:5000`, which Docker binds to all of the host's addresses, so on a server with a public IP anyone could reach gunicorn directly and skip the reverse proxy in front of it. The address now comes from `BIND_ADDRESS`, set in the shell or in a `.env` file next to `docker-compose.yml`, and falls back to `127.0.0.1`. Tested with `docker compose config`: without the variable the port binds to `127.0.0.1`, and with `BIND_ADDRESS=0.0.0.0` it binds to every address as before.
+  - `docker-compose.yml:10`: `"${BIND_ADDRESS:-127.0.0.1}:8091:5000"`.
+  - `.gitignore`: ignore `.env`, so a server's own address is never committed.
+  - `README.md`: the installation steps load `http://127.0.0.1:8091`, and a new paragraph explains the default and `BIND_ADDRESS`.
+
 ## 2026-10-12
 
 - Upgrade Python from 3.14.7 to 3.14.8 (`python:3.14.8-slim`). 3.14.8 is an expedited security release (fixes for SSL and tarfile bugs, among others). Tested in the production image: flake8 and all 30 tests pass during the build, `example.com/A` returns the same addresses as running `dig` in the container, and a private server and an unknown record type get their error messages. The locally excluded `Dockerfile.DEV` isn't in the repo; it was moved to 3.14.8 by hand to match.
