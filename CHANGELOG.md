@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-11
+
+- Link the rating in `ACR.md` to its page on aicoderating.com.
+
 ## 2026-10-21
 
 - Publish the port on 127.0.0.1 by default instead of every address. `docker-compose.yml` published `8091:5000`, which Docker binds to all of the host's addresses, so on a server with a public IP anyone could reach gunicorn directly and skip the reverse proxy in front of it. The address now comes from `BIND_ADDRESS`, set in the shell or in a `.env` file next to `docker-compose.yml`, and falls back to `127.0.0.1`. Tested with `docker compose config`: without the variable the port binds to `127.0.0.1`, and with `BIND_ADDRESS=0.0.0.0` it binds to every address as before.
